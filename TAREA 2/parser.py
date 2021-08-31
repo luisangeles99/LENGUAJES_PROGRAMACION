@@ -40,7 +40,7 @@ def parser():
 # modulo
 def prog():
     if token == scanner.END:
-        print("Expresion bien construida!!")
+        pass
     else:
         exp()
         prog()
@@ -49,16 +49,17 @@ def prog():
 # Módulo que reconoce expresiones
 def exp():
     if token == scanner.NUM:
-        match(token) # reconoce constantes
+        match(token) # reconoce numeros enteros
     elif token == scanner.SIM:
-        match(token) # reconoce delimitador (
-    elif token == scanner.BOO: # delimitador {
-        match(token)
+        match(token) # reconoce simbolos
+    elif token == scanner.BOO:
+        match(token) # reconoce booleanos
     elif token == scanner.STR:
-        match(token) # reconoce identificador
+        match(token) # reconoce strings
     elif token == scanner.LRP:
         match(token)
         elementos()
+        match(scanner.RRP)
     elif token == scanner.RRP:
         match(token)
     else:
@@ -66,9 +67,11 @@ def exp():
 
 # modulo elementos
 def elementos():
-    exp()
-    elementos()
-
+    if token == scanner.RRP:
+        pass
+    else:    
+        exp()
+        elementos()
 
 # Termina con un mensaje de error
 def error(mensaje):

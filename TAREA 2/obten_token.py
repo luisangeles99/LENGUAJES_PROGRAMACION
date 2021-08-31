@@ -43,15 +43,15 @@ def filtro(c):
         return 1 # letras
     elif c == '#': # caracter para bool
         return 2
-    elif c == '"': # para formar strings
+    elif c == '"' or c == '“' or c =='”': # para formar strings
         return 3
     elif c == ' ' or ord(c) == 9 or ord(c) == 10 or ord(c) == 13: # blancos
         return 7
-    elif c == '(': # punto
+    elif c == '(': # delim izquierdo
         return 4
-    elif c == ')': # fin de entrada
+    elif c == ')': # delim derecho
         return 5
-    elif c == '$': # asignación
+    elif c == '$': # fin de entrada
         return 6
     else: # caracter raro
         return 10
@@ -79,10 +79,14 @@ def obten_token():
             _leer = False # ya se leyó el siguiente caracter
             print("Simbolo", lexema)
             return SIM
-        elif edo == BOO:   
-            _leer = False  # ya se leyó el siguiente caracter
+        elif edo == BOO:
+            lexema+=_c # ya se leyó el siguiente caracter
             print("Booleano", lexema)
             return BOO
+        elif edo == STR:
+            lexema+=_c # ya se leyó el siguiente caracter
+            print("String", lexema)
+            return STR
         elif edo == LRP:   
             lexema += _c  # el último caracter forma el lexema
             print("Delimitador", lexema)
@@ -100,5 +104,5 @@ def obten_token():
             return ERR
             
         
-    
-
+#if __name__ == '__main__':
+#    obten_token()
