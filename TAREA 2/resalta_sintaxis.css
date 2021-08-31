@@ -1,3 +1,20 @@
-prueba {
-    color: blue;
+simbolo {
+    color: black;
 }
+numero {
+     color: green;
+}
+string {
+    color: burlywood;
+}
+booleano {
+    color: purple;
+}
+parentesis {
+    color: red;
+}
+dollarSign {
+    color: lightblue;
+}
+
+

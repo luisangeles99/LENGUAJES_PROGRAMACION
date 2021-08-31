@@ -60,15 +60,13 @@ def exp():
         match(token)
         elementos()
         match(scanner.RRP)
-    elif token == scanner.RRP:
-        match(token)
     else:
         error("expresion mal iniciada")
 
 # modulo elementos
 def elementos():
     if token == scanner.RRP:
-        pass
+        return
     else:    
         exp()
         elementos()
