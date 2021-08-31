@@ -43,7 +43,7 @@ MT = [[  1,OPB,LRP,RRP,  4,  0,  4,END,  5,CCD,CEL,  7,  8,  9, CBI,CBF], # edo 
 # de acuerdo al caracter dado
 def filtro(c):
     """Regresa el número de columna asociado al tipo de caracter dado(c)"""
-    if c == '0' or c == '1' or c == '2' or \
+    if c >= '0' and c <= '9' or c == '2' or \
        c == '3' or c == '4' or c == '5' or \
        c == '6' or c == '7' or c == '8' or c == '9': # dígitos
         return 0

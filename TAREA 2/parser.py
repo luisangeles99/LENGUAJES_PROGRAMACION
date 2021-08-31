@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 # Implementación de un parser
 # Reconoce expresiones mediante la gramática:
-# INST -> id = <EXP> $
-# EXP -> EXP op EXP | EXP -> (EXP) | COND | cte | id
-# COND -> { EXP opr EXP ? EXP : EXP }
-# la cual fué modificada para eliminar ambigüedad a:
-# INST -> id = EXP $
-# EXP  -> (EXP) EXP1 | COND EXP1 | cte EXP1 | id EXP1
-# EXP1 -> op EXP EXP1 | vacío
-# COND -> { EXP opr EXP ? EXP : EXP }
-# los elementos léxicos (delimitadores, constantes y operadores)
-# son reconocidos por el scanner
+# PROG -> <EXP><PROG> | $
+# EXP -> <ATOMO> | <LISTA> 
+# ATOMO -> SIMBOLO | <CONSTANTE>
+# CONSTANTE -> NUMERO | BOOLEANO | STRING
+# LISTA -> (<ELEMENTOS>)
+# ELEMENTOS -> <EXP><ELEMENTOS> | vacío
+# No existe ambigüedad en el lenguaje
+# los elementos léxicos son reconocidos por el scanner
 #
-# Autor: Dr. Santiago Conant, Agosto 2014 (modificado Agosto 2015)
 # Autores: 
 
 import sys
@@ -34,55 +31,44 @@ def match(tokenEsperado):
 def parser():
     global token 
     token = scanner.obten_token() # inicializa con el primer token
-    inst()
+    prog()
     if token == scanner.END:
         print("Expresion bien construida!!")
     else:
         error("expresion mal terminada")
 
-# Módulo que reconoce instrucciones
-def inst():
-    match(scanner.IDE) # identificador
-    match(scanner.ASG) # asignación =
-    exp()
+# modulo
+def prog():
+    if token == scanner.END:
+        print("Expresion bien construida!!")
+    else:
+        exp()
+        prog()
+
 
 # Módulo que reconoce expresiones
 def exp():
-    if token == scanner.INT or token == scanner.FLT:
+    if token == scanner.NUM:
         match(token) # reconoce constantes
-        exp1()
-    elif token == scanner.LRP:
+    elif token == scanner.SIM:
         match(token) # reconoce delimitador (
-        exp()
-        match(scanner.RRP) # delimitador )
-        exp1()
-    elif token == scanner.CBI: # delimitador {
-        cond()
-        exp1()
-    elif token == scanner.IDE:
+    elif token == scanner.BOO: # delimitador {
+        match(token)
+    elif token == scanner.STR:
         match(token) # reconoce identificador
-        exp1()
+    elif token == scanner.LRP:
+        match(token)
+        elementos()
+    elif token == scanner.RRP:
+        match(token)
     else:
         error("expresion mal iniciada")
 
-# Módulo auxiliar para reconocimiento de expresiones
-def exp1():
-    if token == scanner.OPB:
-        match(token) # operador binario
-        exp()
-        exp1()
+# modulo elementos
+def elementos():
+    exp()
+    elementos()
 
-# Módulo auxiliar para reconocimiento de condicionales
-def cond():
-    match(scanner.CBI) # delimitador {
-    exp()
-    match(scanner.OPR) # operador relacional
-    exp()
-    match(scanner.CCD) # condicional ?
-    exp()
-    match(scanner.CEL) # condicional :
-    exp()
-    match(scanner.CBF) # delimitador }
 
 # Termina con un mensaje de error
 def error(mensaje):
