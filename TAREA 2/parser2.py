@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Implementación de un parser
 # Reconoce expresiones mediante la gramática:
 # INST -> id = <EXP> $
@@ -12,9 +13,14 @@
 # son reconocidos por el scanner
 #
 # Autor: Dr. Santiago Conant, Agosto 2014 (modificado Agosto 2015)
+# Autores: 
 
 import sys
-import obten_token as scanner
+import obten_token2 as scanner
+
+# Strings de apoyo para formar el archivo HTML
+htmlFormatoInicio = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><link rel='stylesheet' href='resalta_sintaxis.css'></head><body>"
+htmlFormatoCierre = "</body></html>"
 
 # Empata y obtiene el siguiente token
 def match(tokenEsperado):
@@ -84,3 +90,5 @@ def error(mensaje):
     sys.exit(1)
     
         
+if __name__ == '__main__':
+    parser()

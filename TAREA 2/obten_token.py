@@ -2,7 +2,7 @@
 
 # Implementación de un scanner mediante la codificación de un Autómata
 # Finito Determinista como una Matríz de Transiciones
-# Autor: Dr. Santiago Conant, Agosto 2014 (modificado en Agosto 2015)
+# Autor: Dr. Santiago Conant, Agosto 2014 (modificado en Agosto 2021)
 
 import sys
 
@@ -13,18 +13,31 @@ OPB = 102  # Operador binario
 LRP = 103  # Delimitador: paréntesis izquierdo
 RRP = 104  # Delimitador: paréntesis derecho
 END = 105  # Fin de la entrada
+ASG = 106  # Operador de asignación
+CCD = 107  # Operador condicional ?
+CEL = 108  # Operador condicional :
+OPR = 109  # Operador relacional
+IDE = 110  # Identificador
+CBI = 111  # delimitador condicional {
+CBF = 112  # delimitador condicional }
+
 ERR = 200  # Error léxico: palabra desconocida
 
 # Matriz de transiciones: codificación del AFD
 # [renglón, columna] = [estado no final, transición]
 # Estados > 99 son finales (ACEPTORES)
 # Caso especial: Estado 200 = ERROR
-#      dig  op  (   ) raro esp  .   $
-MT = [[  1,OPB,LRP,RRP,  4,  0,  4,END], # edo 0 - estado inicial
-      [  1,INT,INT,INT,  4,INT,  2,INT], # edo 1 - dígitos enteros
-      [  3,  4,  4,  4,  4,ERR,  4,  4], # edo 2 - primer decimal flotante
-      [  3,FLT,FLT,FLT,  4,FLT,  4,FLT], # edo 3 - decimales restantes flotante
-      [  4,  4,  4,  4,  4,ERR,  4,  4]] # edo 4 - estado de error
+#      dig  op  (   ) raro esp  .   $   =   ?   :   !   <> letra {   }
+MT = [[  1,OPB,LRP,RRP,  4,  0,  4,END,  5,CCD,CEL,  7,  8,  9, CBI,CBF], # edo 0 - estado inicial
+      [  1,INT,INT,INT,  4,INT,  2,INT,INT,INT,INT,INT,INT,  4, INT,INT], # edo 1 - dígitos enteros
+      [  3,  4,  4,  4,  4,ERR,  4,  4,  4,  4,  4,  4,  4,  4,   4,  4], # edo 2 - primer decimal flotante
+      [  3,FLT,FLT,FLT,  4,FLT,  4,FLT,FLT,FLT,FLT,FLT,FLT,  4, FLT,FLT], # edo 3 - decimales restantes flotante
+      [  4,  4,  4,  4,  4,ERR,  4,  4,  4,  4,  4,  4,  4,  4,   4,  4], # edo 4 - estado de error
+      [ASG,ASG,ASG,ASG,  4,ASG,  4,ASG,  6,ASG,ASG,ASG,ASG,ASG, ASG,ASG], # edo 5 - asignación
+      [OPR,OPR,OPR,OPR,  4,OPR,  4,OPR,OPR,OPR,OPR,OPR,OPR,OPR, OPR,OPR], # edo 6 - segundo caracter relacional
+      [  4,  4,  4,  4,  4,ERR,  4,  4,  6,  4,  4,  4,  4,  4,   4,  4], # edo 7 - operador relacional !
+      [OPR,OPR,OPR,OPR,  4,OPR,  4,OPR,  6,OPR,OPR,OPR,OPR,OPR, OPR,OPR], # edo 8 - operadores relacionales
+      [  4,IDE,IDE,IDE,  4,IDE,  4,IDE,IDE,IDE,IDE,IDE,IDE,  9, IDE,IDE]] # edo 9 - identificadores
 
 # Filtro de caracteres: regresa el número de columna de la matriz de transiciones
 # de acuerdo al caracter dado
@@ -47,6 +60,22 @@ def filtro(c):
         return 6
     elif c == '$': # fin de entrada
         return 7
+    elif c == '=': # asignación
+        return 8
+    elif c == '?': # condicional ?
+        return 9
+    elif c == ':': # condicional :
+        return 10
+    elif c == '!': # operador !
+        return 11
+    elif c == '<' or c == '>': # operador relacional
+        return 12
+    elif ord(c) >= ord('a') and ord(c) <= ord('z'): # letra
+        return 13
+    elif c == '{': # delimitador {
+        return 14
+    elif c == '}': # delimitador }
+        return 15
     else: # caracter raro
         return 4
 
@@ -88,8 +117,36 @@ def obten_token():
         elif edo == END:
             print("Fin de expresion")
             return END
+        elif edo == ASG:    
+            _leer = False # ya se leyó el siguiente caracter
+            print("Asignación", lexema) 
+            return ASG
+        elif edo == CCD:  
+            lexema += _c  # el último caracter forma el lexema
+            print("Condicional", lexema)
+            return CCD
+        elif edo == CEL:  
+            lexema += _c  # el último caracter forma el lexema
+            print("Condicional", lexema)
+            return CEL
+        elif edo == OPR:  
+            _leer = False # ya se leyó el siguiente caracter
+            print("Relacional", lexema)
+            return OPR
+        elif edo == IDE:  
+            _leer = False # ya se leyó el siguiente caracter
+            print("Identificador", lexema)
+            return IDE
+        elif edo == CBI:  
+            lexema += _c  # el último caracter forma el lexema
+            print("Delimitador", lexema)
+            return CBI
+        elif edo == CBF:  
+            lexema += _c  # el último caracter forma el lexema
+            print("Delimitador", lexema)
+            return CBF
         else:   
-            leer = False # el último caracter no es raro
+            _leer = False # el último caracter no es raro
             print("ERROR! palabra ilegal", lexema)
             return ERR
             
