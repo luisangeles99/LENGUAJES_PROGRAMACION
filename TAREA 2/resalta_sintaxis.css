@@ -1,20 +1,28 @@
-simbolo {
-    color: black;
-}
-numero {
-     color: green;
-}
-string {
-    color: burlywood;
-}
-booleano {
-    color: purple;
-}
-parentesis {
-    color: red;
-}
-dollarSign {
-    color: lightblue;
+* {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
 }
 
+.simbolo {
+    color: black;
+}
+.numero {
+     color: green;
+}
+.string {
+    color: burlywood;
+}
+.booleano {
+    color: purple;
+}
+.parentesis {
+    color: brown;
+}
+.dollarSign {
+    color: lightblue;
+}
+.error {
+    color: red;
+}
 

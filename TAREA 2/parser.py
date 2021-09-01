@@ -25,6 +25,7 @@ def match(tokenEsperado):
     if token == tokenEsperado:
         token = scanner.obten_token()
     else:
+        scanner.error_sintactico()
         error("token equivocado")
 
 # Función principal: implementa el análisis sintáctico
@@ -36,6 +37,8 @@ def parser():
         print("Expresion bien construida!!")
     else:
         error("expresion mal terminada")
+
+    scanner.crear_archivo()
 
 # modulo
 def prog():
@@ -61,6 +64,8 @@ def exp():
         elementos()
         match(scanner.RRP)
     else:
+        if (token != scanner.ERR and token != scanner.END):
+            scanner.error_sintactico()
         error("expresion mal iniciada")
 
 # modulo elementos
@@ -73,8 +78,16 @@ def elementos():
 
 # Termina con un mensaje de error
 def error(mensaje):
+    global token
     print("ERROR:", mensaje)
-    sys.exit(1)
+
+    if token != scanner.END:
+        token = scanner.obten_token()
+    else:
+        scanner.crear_archivo()
+        exit()
+
+    # sys.exit(1)
     
         
 if __name__ == '__main__':
