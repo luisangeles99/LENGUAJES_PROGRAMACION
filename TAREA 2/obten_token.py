@@ -2,7 +2,7 @@
 
 # Implementación de un scanner mediante la codificación de un Autómata
 # Finito Determinista como una Matríz de Transiciones
-# Autor: 
+# Autores: Luis Angeles / Adrianda Fernández / Carlos Gálvez
 
 import sys
 

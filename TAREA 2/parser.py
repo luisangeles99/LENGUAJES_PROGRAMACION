@@ -10,7 +10,7 @@
 # No existe ambigüedad en el lenguaje
 # los elementos léxicos son reconocidos por el scanner
 #
-# Autores: 
+# Autores:  Luis Angeles / Adrianda Fernández / Carlos Gálvez
 
 import sys
 import obten_token as scanner
