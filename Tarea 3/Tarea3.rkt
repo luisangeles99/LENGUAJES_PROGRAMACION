@@ -1,4 +1,30 @@
 #lang racket
+; Ejercicio 1 Determinar si un número natural es un número primo
+(define (primo? n)
+  (if (<= n 1)
+      #f
+      (primo-aux n 2)))
+
+(define (primo-aux n r)
+  (cond ((> r (sqrt n)) #t)
+         ((= (modulo n r) 0) #f)
+         (else (primo-aux n (+ r 1)))))
+
+; Ejercicio 2 Regresa la suma de los dígitos pares que conforman a un número entero
+(define (sumdpar n s)
+  (if (<= n 0)
+      s
+      (sumdpar (quotient n 10) (if (= (modulo n 2) 0) (+ s (remainder n 10)) s))))
+
+; Ejercicio 3 Número de combiaciones C(n,r)
+(define (combinaciones n r)
+  (cond ((= n r) '1)
+        ((= r 1) n)
+        (else (+ (combinaciones (- n 1) (- r 1)) (combinaciones (- n 1) r)))))
+
+; Ejercicio 4 en el archivo
+; https://docs.google.com/document/d/1W4rxBrICwx_UkMU8Tp2C8yPD2zDs9Fc2Fx7BiAcwKjM/edit?usp=sharing
+
 ; Ejercicio 5 Bitor calcular or lógico entre bits dados como elementos de dos listas dadas.
 ; Asumir tamaño de listas y numero
 
