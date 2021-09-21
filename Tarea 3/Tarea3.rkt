@@ -1,20 +1,29 @@
 #lang racket
-; Ejercicio 1 Determinar si un número natural es un número primo
+; Adriana Fernández López A01197148
+;
+; Tarea 3
+
+; Ejercicio 1 Determinar si un número natural n es un número primo
 (define (primo? n)
   (if (<= n 1)
       #f
       (primo-aux n 2)))
 
+; función auxiliar recursiva para revisar si n es divisible entre r mientras r sea menor a la raiz de n
 (define (primo-aux n r)
   (cond ((> r (sqrt n)) #t)
          ((= (modulo n r) 0) #f)
          (else (primo-aux n (+ r 1)))))
 
-; Ejercicio 2 Regresa la suma de los dígitos pares que conforman a un número entero
-(define (sumdpar n s)
+; Ejercicio 2 Regresa la suma de los dígitos pares que conforman a un número entero n
+(define (sumdpar n)
+  (sumdpar-aux n 0))
+
+; funcion auxiliar, n es el número entero y s acumula la suma de los digitos pares
+(define (sumdpar-aux n s)
   (if (<= n 0)
       s
-      (sumdpar (quotient n 10) (if (= (modulo n 2) 0) (+ s (remainder n 10)) s))))
+      (sumdpar-aux (quotient n 10) (if (= (modulo n 2) 0) (+ s (remainder n 10)) s))))
 
 ; Ejercicio 3 Número de combiaciones C(n,r)
 (define (combinaciones n r)
@@ -86,12 +95,16 @@
 
 ; Ejercicio 8 expresion? determinar si expresion aritmetica en notacion prefija como una lista
 ; imbricada se especifó correctamente
+
+; funcion para revisar si el caracter es un operador +,-,/,*
 (define (op? x)
   (or (eq? x '+) (eq? x '-) (eq? x '*) (eq? x '/)))
 
 (define (expresion? expr)
   (expr-aux expr #t))
 
+; funcion auxiliar para revisar que la expresion expr esté bien formada
+; el argumento first indica si se está leyendo el primer elemento de la expresion, que debe ser un operador
 (define (expr-aux expr first)
   (cond ((null? expr) #t)
         ((list? (car expr))
