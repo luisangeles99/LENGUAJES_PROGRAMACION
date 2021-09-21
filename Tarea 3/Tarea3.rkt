@@ -86,8 +86,20 @@
 
 ; Ejercicio 8 expresion? determinar si expresion aritmetica en notacion prefija como una lista
 ; imbricada se especifó correctamente
+(define (op? x)
+  (or (eq? x '+) (eq? x '-) (eq? x '*) (eq? x '/)))
 
+(define (expresion? expr)
+  (expr-aux expr #t))
 
+(define (expr-aux expr first)
+  (cond ((null? expr) #t)
+        ((list? (car expr))
+         (if (eq? #t first)
+             #f ; el primer elemento no puede ser una lista
+             (and (expr-aux (car expr) #t) (expr-aux (cdr expr) #f))))
+        ((eq? first #t) (and (op? (car expr)) (expr-aux (cdr expr) #f))); se está leyendo el primer elemento, tiene que ser operador
+        ((eq? first #f) (and (number? (car expr)) (expr-aux (cdr expr) #f))))) ; no es el primer elemento, asi que tiene que ser numero
 
 ; Ejercicio 9 Palindromo recursivo generando el patron palindromo intercalando a o b N veces
 
@@ -107,6 +119,3 @@
         ((list? (car lista))
          (inverse-aux (cdr lista) (cons(inverse-aux (car lista) '()) prev)))
         (else (inverse-aux (cdr lista) (cons (car lista) prev)))))
-
-   
-  
