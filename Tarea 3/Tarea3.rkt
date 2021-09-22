@@ -1,9 +1,16 @@
 #lang racket
+<<<<<<< Updated upstream
 ; Adriana Fernández López A01197148
 ;
 ; Tarea 3
 
 ; Ejercicio 1 Determinar si un número natural n es un número primo
+=======
+; Adriana Fernández
+; Luis Angeles
+;
+; Ejercicio 1 Determinar si un número natural es un número primo
+>>>>>>> Stashed changes
 (define (primo? n)
   (if (<= n 1)
       #f
@@ -50,7 +57,7 @@
         (else (cons 0 (bitor (cdr lista1) (cdr lista2))))))
 
 ; Ejercicio 6 función hexadecimal obtener lista de numeros y letras representando la codificacion
-; hexadecimal recibe numeros y letras 
+; hexadecimal recibe numeros bin 
 
 (define (hexadecimal n)
   (if (zero? n)
