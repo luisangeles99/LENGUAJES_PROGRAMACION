@@ -1,16 +1,10 @@
 #lang racket
-<<<<<<< Updated upstream
 ; Adriana Fernández López A01197148
-;
+; Luis Angeles A01273884
 ; Tarea 3
 
 ; Ejercicio 1 Determinar si un número natural n es un número primo
-=======
-; Adriana Fernández
-; Luis Angeles
-;
-; Ejercicio 1 Determinar si un número natural es un número primo
->>>>>>> Stashed changes
+;S
 (define (primo? n)
   (if (<= n 1)
       #f
