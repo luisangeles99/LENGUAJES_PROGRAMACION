@@ -86,7 +86,8 @@
       (nivel-nivel 0 nivel ABB)))
 
 (define (nivel-nivel act nivel ABB) ; auxiliar para recorrer nivel por nivel
-  (cond ((eq? act nivel)
+  (cond ((> act nivel) 0)
+        ((eq? act nivel)
          (if (null? ABB) 0
              1))
         (else (+ (if (null? (cadr ABB)) 0
