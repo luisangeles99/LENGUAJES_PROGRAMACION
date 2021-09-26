@@ -1,5 +1,6 @@
 #lang racket
 ; Adriana Fernández López A01197148
+; Luis Angeles A01273884
 ;
 ; Tarea 4
 
@@ -59,3 +60,38 @@
             ((<= curr max-col) (cons (car ren) (agrega-val-col val (cdr ren) pos (+ 1 curr) max-col)))
             (else '()))))
 
+
+
+; 2a Funcion rango, dado un ABB regresar el rango en formato (min max) donde min es el valor minimo y max es el valor maximo en el ABB
+(define (rango abb)
+  (if (null? abb) '()
+      (list (recorrido-izq abb) (recorrido-der abb))))
+
+(define (recorrido-izq abb) ; funcion visitar nodo izq
+  (if (null? (cadr abb))
+      (car abb)
+      (recorrido-izq (cadr abb))))
+
+(define (recorrido-der abb) ; funcion visitar nodo derecho
+  (if (null? (caddr abb))
+      (car abb)
+      (recorrido-der (caddr abb))))
+
+; 2b Funcion cuenta-nivel, regresar la cantidad de nodos en cierto nivel de un arbol binario
+;
+; se intuye que el ABB está bien construido
+;
+(define (cuenta-nivel nivel ABB)
+  (if (null? ABB) '()
+      (nivel-nivel 0 nivel ABB)))
+
+(define (nivel-nivel act nivel ABB) ; auxiliar para recorrer nivel por nivel
+  (cond ((eq? act nivel)
+         (if (null? ABB) 0
+             1))
+        (else (+ (if (null? (cadr ABB)) 0
+                     (nivel-nivel (+ act 1) nivel (cadr ABB)))
+                 (if (null? (caddr ABB)) 0
+                     (nivel-nivel (+ act 1) nivel (caddr ABB)))))))
+    
+;SECCION 2
