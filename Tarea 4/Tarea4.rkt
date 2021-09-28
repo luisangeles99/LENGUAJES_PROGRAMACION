@@ -109,3 +109,15 @@
   ((lambda (nodo)
      (if (null? nodo) '() (map car (cdr nodo)))) ; (cuerpo func lambda) regresa lista del primer elemento de cada adyacencia
    (apply append (map (lambda (x) (if (eq? origen (car x)) x '())) mat)))) ; (argumento func lambda) regresa lista del nodo origen
+
+; 3b. Funcion para eliminar un nodo de un grafo
+(define (elimina-nodo grafo nodo)
+  (apply append (map (lambda (x) (if (eq? nodo (car x)) '() (list x)))
+                     (map (lambda (n) (cons (car n) (apply append (map (lambda (x) (if (eq? (car x) nodo) '() (list x))) (cdr n)))))
+                          grafo))))
+
+; Para eliminar el elemento del nodo elim del grafo:
+;    (apply append (map (lambda (x) (if (eq? elim (car x)) '() (list x))) grafo))
+; Para eliminar las adyacencias hacia el nodo elim en un elemento:
+;    (map (lambda (n) (cons (car n) (apply append (map (lambda (x) (if (eq? (car x) elim) '() (list x))) (cdr n))))) g)
+
