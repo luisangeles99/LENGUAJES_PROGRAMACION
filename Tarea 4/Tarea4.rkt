@@ -96,3 +96,16 @@
                      (nivel-nivel (+ act 1) nivel (caddr ABB)))))))
     
 ;SECCION 2
+(define g
+'((A (B 2) (D 10))
+ (B (C 9) (E 5))
+ (C (A 12) (D 6))
+ (D (E 7))
+ (E (C 3))
+))
+
+; 3a. Funcion para listar los nodos que tienen al nodo N como origen directo
+(define (nodos-destino mat origen)
+  ((lambda (nodo)
+     (if (null? nodo) '() (map car (cdr nodo)))) ; (cuerpo func lambda) regresa lista del primer elemento de cada adyacencia
+   (apply append (map (lambda (x) (if (eq? origen (car x)) x '())) mat)))) ; (argumento func lambda) regresa lista del nodo origen
