@@ -1,7 +1,8 @@
 -module(producto).
 -export([producto/2, registra_producto/2, elimina_producto/1, modifica_producto/2]).
 
-matriz() -> 'tienda@MX1219-PF14RYNU'.
+%matriz() -> 'tienda@MX1219-PF14RYNU'. %compu Adriana
+matriz() -> 'tienda@Luiss-Mac-mini'. %compu Luis
 
 % Productos
 % Los productos se crean como un proces
