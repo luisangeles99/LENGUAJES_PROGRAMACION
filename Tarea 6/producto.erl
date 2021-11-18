@@ -30,6 +30,7 @@ producto(Nombre, Cantidad) ->
 registra_producto(Producto, Cantidad) when Cantidad >= 0 ->
     P = spawn(?MODULE, producto, [Producto, Cantidad]), % crea el proceso del producto
     {tienda, matriz()} ! {self(), registraProducto, Producto, P}, % llama a la tienda para que lo registre
+    io:format("Se solicita el registro del producto ~p ~n", [Producto]),
     receive
         {ok} -> io:format("Se registro el producto ~p correctamente ~n", [Producto]);
         {fail} -> io:format("Ya estaba registrado el producto ~p ~n", [Producto])
@@ -38,6 +39,7 @@ registra_producto(Producto, Cantidad) when Cantidad >= 0 ->
 % Metodo de interfaz para eliminar un producto
 elimina_producto(Producto) -> 
     {tienda, matriz()} ! {self(), eliminarProducto, Producto}, % llama a la tienda para que lo quite del registro
+    io:format("Se solicita la eliminación del registro del producto ~p ~n", [Producto]),
     receive
         {ok} -> io:format("Se elimino el producto ~p correctamente ~n", [Producto]);
         {fail} -> io:format("No existe el producto ~p ~n", [Producto])
@@ -46,8 +48,19 @@ elimina_producto(Producto) ->
 % Metodo de interfaz para modificar al cantidad en existencia que hay del producto
 modifica_producto(Producto, Cantidad) -> 
     {tienda, matriz()} ! {self(), modificarProducto, Producto, Cantidad},
+    io:format("Se solicita la modificación de la cantidad del producto ~p por ~p unidades ~n", [Producto, Cantidad]),
     receive
         {invalido} -> io:format("No existe el producto ~p ~n", [Producto]);
         {ok} -> io:format("Se modifico correctamente el producto ~p ~n", [Producto]);
         {fail} -> io:format("No hay suficiente ~p ~n", [Producto])
     end. 
+
+
+%%%%%%% INSTRUCCIONES PARA EJECUTA PRODUCTO %%%%%%%
+%%% Abrir terminal en directorio con archivo tienda, producto
+%%% ejecutar erl -sname producto
+%%% Verificar que línea 5 matriz tienda@NOMBRECOMPU, NOMBRECOMPU corresponda a la compu que se utiliza
+%%% ejecutar c(producto).
+%%% Registrar producto producto:registra_producto(Producto, Cantidad). ej Cantidad -> 10, Producto -> helado
+%%% Eliminar producto producto:elimina_producto(Producto). 
+%%% Moficiar producto producto:modifica_producto(Producto, Cantidad).
