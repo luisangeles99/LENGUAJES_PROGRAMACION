@@ -3,7 +3,8 @@
 
 tienda(Socios, Productos, NumPedido, Pedidos) ->
     receive
-        {cerrar} -> 'Bye'; % Termina el proceso de la tienda
+        {cerrar} -> % Termina el proceso de la tienda y los productos
+            lists:map(fun({_,Pid}) -> Pid ! {terminar} end, Productos);
         {De, suscribir, Socio} -> % Suscribir un nuevo socio,
         io:format("~p solicita una suscripción de socio ~n", [Socio]),
             case buscaSocio(Socio, Socios) of
@@ -110,10 +111,13 @@ tienda(Socios, Productos, NumPedido, Pedidos) ->
 % Metodo de interfaz
 % Registra e inicializa el proceso de la tienda con el alias 'tienda'
 abre_tienda() ->
-    register(tienda, spawn(?MODULE, tienda, [[], [], 0, []])).
+    register(tienda, spawn(?MODULE, tienda, [[], [], 0, []])),
+    'tienda abierta'.
 
 % Metodo de interfaz para terminar el proceso de la tienda
-cierra_tienda() -> tienda ! {cerrar}.
+cierra_tienda() -> 
+    tienda ! {cerrar},
+    'tienda cerrada'.
 
 % Metodo de interfaz para obtener la lista de todos los socios
 lista_socios() -> 
