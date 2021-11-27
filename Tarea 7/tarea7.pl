@@ -76,6 +76,9 @@ mayores(Valor, arbol(R, I, D), H):-
 mayores(Valor, arbol(R, _, D), H):- 
     Valor > R,!,
     mayores(Valor, D, H).
+mayores(Valor, arbol(R, _, D), H):- 
+    Valor =:= R,!,
+    mayores(Valor, D, H).
 mayores(_, nil, []).
 
 
@@ -88,7 +91,7 @@ inserta(R, arbol(R2,I,D), arbol(R2,I2,D)):- R=<R2, inserta(R,I,I2).
 inserta(R, arbol(R2,I,D), arbol(R2,I,D2)):- R>R2, inserta(R,D,D2).
 
 %auxiliar para manejar los casos
-siembra_aux([],nil). /* insert a list of numbers into an empty binary search tree */
+siembra_aux([],nil).
 siembra_aux([H|T],Arbol):- siembra_aux(T, Temp), inserta(H,Temp,Arbol),!.
 
 %reverse a la lista por recursividad
